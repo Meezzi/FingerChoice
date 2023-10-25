@@ -15,12 +15,12 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.meezzi.fingerchoice.databinding.ActivitySignInBinding
-
 
 class SignInActivity : AppCompatActivity() {
 
@@ -62,6 +62,11 @@ class SignInActivity : AppCompatActivity() {
                             .build()
                     getResultLauncher.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
+                    Snackbar.make(
+                        binding.btGoogleSignIn,
+                        getString(R.string.error_login),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
@@ -84,10 +89,20 @@ class SignInActivity : AppCompatActivity() {
                             .build()
                     getResultLauncher.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
+                    Snackbar.make(
+                        binding.btGoogleSignIn,
+                        getString(R.string.error_login_failed),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                     Log.e(TAG, "Google Sign-in failed", e)
                 }
             }
             .addOnFailureListener { e ->
+                Snackbar.make(
+                    binding.btGoogleSignIn,
+                    getString(R.string.error_login_failed),
+                    Snackbar.LENGTH_LONG
+                ).show()
                 Log.e(TAG, "Google Sign-in failed", e)
             }
     }
@@ -116,20 +131,40 @@ class SignInActivity : AppCompatActivity() {
                     }
 
                     else -> {
+                        Snackbar.make(
+                            binding.btGoogleSignIn,
+                            getString(R.string.error_token),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                         Log.d(TAG, "No ID token!")
                     }
                 }
             } catch (e: ApiException) {
                 when (e.statusCode) {
                     CommonStatusCodes.CANCELED -> {
+                        Snackbar.make(
+                            binding.btGoogleSignIn,
+                            getString(R.string.error_cancel),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                         Log.d(TAG, "One-tap dialog was closed.")
                     }
 
                     CommonStatusCodes.NETWORK_ERROR -> {
+                        Snackbar.make(
+                            binding.btGoogleSignIn,
+                            getString(R.string.error_network),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                         Log.d(TAG, "One-tap encountered a network error.")
                     }
 
                     else -> {
+                        Snackbar.make(
+                            binding.btGoogleSignIn,
+                            getString(R.string.error_unknown),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                         Log.d(
                             TAG,
                             "Couldn't get credential from result." + " (${e.localizedMessage})"
