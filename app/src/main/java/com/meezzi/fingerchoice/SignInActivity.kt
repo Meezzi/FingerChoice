@@ -35,8 +35,15 @@ class SignInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = Firebase.auth
-        binding.btGoogleSignIn.setOnClickListener {
-            setSignInRequest()
+
+        val user = auth.currentUser
+        if (user != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        } else {
+            binding.btGoogleSignIn.setOnClickListener {
+                setSignInRequest()
+            }
         }
     }
 
