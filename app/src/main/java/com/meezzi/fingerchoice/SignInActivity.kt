@@ -70,7 +70,7 @@ class SignInActivity : AppCompatActivity() {
                     getResultLauncher.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
                     Snackbar.make(
-                        binding.btGoogleSignIn,
+                        binding.root,
                         getString(R.string.error_login),
                         Snackbar.LENGTH_LONG
                     ).show()
@@ -97,7 +97,7 @@ class SignInActivity : AppCompatActivity() {
                     getResultLauncher.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
                     Snackbar.make(
-                        binding.btGoogleSignIn,
+                        binding.root,
                         getString(R.string.error_login_failed),
                         Snackbar.LENGTH_LONG
                     ).show()
@@ -106,7 +106,7 @@ class SignInActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Snackbar.make(
-                    binding.btGoogleSignIn,
+                    binding.root,
                     getString(R.string.error_login_failed),
                     Snackbar.LENGTH_LONG
                 ).show()
@@ -139,7 +139,7 @@ class SignInActivity : AppCompatActivity() {
 
                     else -> {
                         Snackbar.make(
-                            binding.btGoogleSignIn,
+                            binding.root,
                             getString(R.string.error_token),
                             Snackbar.LENGTH_LONG
                         ).show()
@@ -150,7 +150,7 @@ class SignInActivity : AppCompatActivity() {
                 when (e.statusCode) {
                     CommonStatusCodes.CANCELED -> {
                         Snackbar.make(
-                            binding.btGoogleSignIn,
+                            binding.root,
                             getString(R.string.error_cancel),
                             Snackbar.LENGTH_LONG
                         ).show()
@@ -159,7 +159,7 @@ class SignInActivity : AppCompatActivity() {
 
                     CommonStatusCodes.NETWORK_ERROR -> {
                         Snackbar.make(
-                            binding.btGoogleSignIn,
+                            binding.root,
                             getString(R.string.error_network),
                             Snackbar.LENGTH_LONG
                         ).show()
@@ -168,7 +168,7 @@ class SignInActivity : AppCompatActivity() {
 
                     else -> {
                         Snackbar.make(
-                            binding.btGoogleSignIn,
+                            binding.root,
                             getString(R.string.error_unknown),
                             Snackbar.LENGTH_LONG
                         ).show()
