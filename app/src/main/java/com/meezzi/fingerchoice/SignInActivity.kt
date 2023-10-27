@@ -57,10 +57,10 @@ class SignInActivity : AppCompatActivity() {
                     .setFilterByAuthorizedAccounts(false)
                     .build()
             ).build()
-        showSIgnInUi()
+        showSignInUI()
     }
 
-    private fun showSIgnInUi() {
+    private fun showSignInUI() {
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener(this) { result ->
                 try {
