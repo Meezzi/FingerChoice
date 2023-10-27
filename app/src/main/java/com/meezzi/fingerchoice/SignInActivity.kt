@@ -35,7 +35,10 @@ class SignInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = Firebase.auth
+        checkUserLoginState()
+    }
 
+    private fun checkUserLoginState() {
         val user = auth.currentUser
         if (user != null) {
             startActivity(Intent(this, MainActivity::class.java))
