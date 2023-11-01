@@ -60,32 +60,28 @@ class SignInActivity : AppCompatActivity() {
                     .setFilterByAuthorizedAccounts(false)
                     .build()
             ).build()
-        showSignInUI()
+        startGoogleSignIn()
     }
 
-    private fun showSignInUI() {
+    private fun startGoogleSignIn() {
         oneTapClient.beginSignIn(signInRequest)
-            .addOnSuccessListener(this) { result ->
+            .addOnSuccessListener { result ->
                 try {
-                    val intentSenderRequest =
-                        IntentSenderRequest.Builder(result.pendingIntent.intentSender)
+                    getResultLauncher.launch(
+                        IntentSenderRequest
+                            .Builder(result.pendingIntent.intentSender)
                             .build()
-                    getResultLauncher.launch(intentSenderRequest)
+                    )
                 } catch (e: IntentSender.SendIntentException) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.error_login),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    showSnackBar(getString(R.string.error_login))
                 }
             }
             .addOnFailureListener(this) {
-                signIn()
+                startGoogleSignUp()
             }
     }
 
-    private fun signIn() {
+    private fun startGoogleSignUp() {
         val request = GetSignInIntentRequest.builder()
             .setServerClientId(BuildConfig.GOOGLE_CLIENT_ID)
             .build()
@@ -93,27 +89,14 @@ class SignInActivity : AppCompatActivity() {
         Identity.getSignInClient(this)
             .getSignInIntent(request)
             .addOnSuccessListener { result ->
-                try {
-                    val intentSenderRequest =
-                        IntentSenderRequest.Builder(result.intentSender)
-                            .build()
-                    getResultLauncher.launch(intentSenderRequest)
-                } catch (e: IntentSender.SendIntentException) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.error_login_failed),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                    Log.e(TAG, "Google Sign-in failed", e)
-                }
+                getResultLauncher.launch(
+                    IntentSenderRequest
+                        .Builder(result.intentSender)
+                        .build()
+                )
             }
             .addOnFailureListener { e ->
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.error_login_failed),
-                    Snackbar.LENGTH_LONG
-                ).show()
-                Log.e(TAG, "Google Sign-in failed", e)
+                showSnackBar(getString(R.string.error_login_failed))
             }
     }
 
@@ -122,66 +105,43 @@ class SignInActivity : AppCompatActivity() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             try {
-                val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
-                val idToken = credential.googleIdToken
-                when {
-                    idToken != null -> {
-                        Log.d(TAG, "Got ID token.")
-                        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-                        auth.signInWithCredential(firebaseCredential)
-                            .addOnCompleteListener(this) { task ->
-                                if (task.isSuccessful) {
-                                    Log.d(TAG, "signInWithCredential:success")
-                                } else {
-                                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                                }
+                val idToken = oneTapClient.getSignInCredentialFromIntent(result.data).googleIdToken
+                if (idToken != null) {
+                    val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                    auth.signInWithCredential(firebaseCredential)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "signInWithCredential:success")
+                            } else {
+                                Log.w(TAG, "signInWithCredential:failure", task.exception)
                             }
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
-
-                    else -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.error_token),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        Log.d(TAG, "No ID token!")
-                    }
+                        }
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } else {
+                    showSnackBar(getString(R.string.error_token))
                 }
             } catch (e: ApiException) {
                 when (e.statusCode) {
                     CommonStatusCodes.CANCELED -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.error_cancel),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        Log.d(TAG, "One-tap dialog was closed.")
+                        showSnackBar(getString(R.string.error_cancel))
                     }
 
                     CommonStatusCodes.NETWORK_ERROR -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.error_network),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        Log.d(TAG, "One-tap encountered a network error.")
+                        showSnackBar(getString(R.string.error_network))
                     }
 
                     else -> {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.error_unknown),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        Log.d(
-                            TAG,
-                            "Couldn't get credential from result." + " (${e.localizedMessage})"
-                        )
+                        showSnackBar(getString(R.string.error_unknown))
                     }
                 }
             }
         }
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar
+            .make(binding.root, message, Snackbar.LENGTH_LONG)
+            .show()
     }
 }
