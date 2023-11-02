@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_graph"
+    app:startDestination="@id/navigation_explore_restaurant">
+
+    <fragment
+        android:id="@+id/navigation_explore_restaurant"
+        android:name="com.meezzi.fingerchoice.ExploreRestaurantFragment"
+        android:label="ExploreRestaurantFragment"
+        tools:layout="@layout/fragment_explore_restaurant" />
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.meezzi.fingerchoice.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/navigation_saved_restaurant"
+        android:name="com.meezzi.fingerchoice.SavedRestaurantFragment"
+        android:label="SavedRestaurantFragment"
+        tools:layout="@layout/fragment_saved_restaurant" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.meezzi.fingerchoice.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>
