@@ -65,6 +65,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+    // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    // Kakao MAP API
+    implementation("com.kakao.maps.open:android:2.6.0")
 }
