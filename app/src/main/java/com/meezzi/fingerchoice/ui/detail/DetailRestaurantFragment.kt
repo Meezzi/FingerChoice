@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.tabs.TabLayoutMediator
 import com.meezzi.fingerchoice.databinding.FragmentDetailRestaurantBinding
 
 class DetailRestaurantFragment : Fragment() {
@@ -22,6 +23,11 @@ class DetailRestaurantFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
 
+        binding.detailViewpager.adapter = HomeViewpagerAdapter(this)
+
+        TabLayoutMediator(binding.tabLayout, binding.detailViewpager) { tab, position ->
+            tab.text = DetailInfo.values()[position].toString()
+        }.attach()
+    }
 }
