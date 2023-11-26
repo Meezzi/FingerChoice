@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -27,6 +30,19 @@ class MapFragment : Fragment() {
 
     private lateinit var labelLayer: LabelLayer
     private var isLabelVisible = false
+    private lateinit var behavior: BottomSheetBehavior<ConstraintLayout>
+
+    val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            // Do something for new state.
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            // Do something for slide offset.
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +60,9 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setMap()
+        initEvent()
+        val standardBottomSheet = binding.persistentBottomSheet
+        val standardBottomSheetBehavior = BottomSheetBehavior.from(standardBottomSheet)
     }
 
     private fun setMap() {
@@ -90,5 +109,47 @@ class MapFragment : Fragment() {
             labelLayer.addLabel(LabelOptions.from(labelId, pos).setStyles(styles))
             isLabelVisible = true
         }
+    }
+
+    private fun initEvent() {
+        persistentBottomSheetEvent()
+    }
+
+    private fun persistentBottomSheetEvent() {
+        behavior = BottomSheetBehavior.from(binding.persistentBottomSheet)
+        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        behavior.removeBottomSheetCallback(bottomSheetCallback)
+                    }
+
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+
+                    }
+
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        Navigation.findNavController(binding.root).navigate(R.id.action_navigation_map_to_navigation_detailRestaurant)
+                    }
+
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+
+                    }
+
+                    BottomSheetBehavior.STATE_SETTLING -> {
+
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 }
