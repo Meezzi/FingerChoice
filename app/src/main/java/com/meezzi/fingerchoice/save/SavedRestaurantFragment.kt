@@ -1,15 +1,15 @@
-package com.meezzi.fingerchoice
+package com.meezzi.fingerchoice.save
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.meezzi.fingerchoice.databinding.FragmentProfileBinding
+import com.meezzi.fingerchoice.databinding.FragmentSavedRestaurantBinding
 
-class ProfileFragment : Fragment() {
+class SavedRestaurantFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentSavedRestaurantBinding? = null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentSavedRestaurantBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -1,4 +1,4 @@
-package com.meezzi.fingerchoice
+package com.meezzi.fingerchoice.signin
 
 import android.app.Activity
 import android.content.ContentValues.TAG
@@ -20,6 +20,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.meezzi.fingerchoice.BuildConfig
+import com.meezzi.fingerchoice.MainActivity
+import com.meezzi.fingerchoice.R
 import com.meezzi.fingerchoice.databinding.ActivitySignInBinding
 
 class SignInActivity : AppCompatActivity() {
