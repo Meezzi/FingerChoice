@@ -1,4 +1,4 @@
-package com.meezzi.fingerchoice.map
+package com.meezzi.fingerchoice.ui.map
 
 import android.os.Bundle
 import android.view.LayoutInflater

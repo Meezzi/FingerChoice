@@ -1,4 +1,4 @@
-package com.meezzi.fingerchoice.signin
+package com.meezzi.fingerchoice.ui.signin
 
 import android.app.Activity
 import android.content.ContentValues.TAG
