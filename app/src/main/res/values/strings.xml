@@ -16,4 +16,15 @@
     <string name="label_dest_map">맛집 지도</string>
     <string name="label_dest_saved_restaurant">나만의 맛집</string>
     <string name="label_dest_profile">내 정보</string>
+
+    <!--  Detail  -->
+    <string name="detail_call">전화</string>
+    <string name="detail_location">위치</string>
+    <string name="detail_save">저장</string>
+    <string name="detail_share">공유</string>
+    <string name="detail_home">홈</string>
+    <string name="detail_menu">메뉴</string>
+    <string name="detail_review">리뷰</string>
+    <string name="detail_photo">사진</string>
+    <string name="detail_image">라벨</string>
 </resources>
