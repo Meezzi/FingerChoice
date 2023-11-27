@@ -15,10 +15,10 @@
         android:id="@+id/navigation_map"
         android:name="com.meezzi.fingerchoice.ui.map.MapFragment"
         android:label="MapFragment"
-        tools:layout="@layout/fragment_map" >
+        tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_navigation_map_to_navigation_detailRestaurant"
-            app:destination="@id/navigation_detailRestaurant" />
+            app:destination="@id/navigation_detail_restaurant" />
     </fragment>
 
     <fragment
@@ -34,9 +34,25 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/navigation_detailRestaurant"
+        android:id="@+id/navigation_detail_restaurant"
         android:name="com.meezzi.fingerchoice.ui.detail.DetailRestaurantFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_detail_restaurant" />
+        tools:layout="@layout/fragment_detail_restaurant">
+        <action
+            android:id="@+id/action_navigation_detail_restaurant_to_navigation_write_review"
+            app:destination="@id/navigation_write_review" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_write_review"
+        android:name="com.meezzi.fingerchoice.ui.composition.WriteReviewFragment"
+        android:label="WriteReviewFragment"
+        tools:layout="@layout/fragment_write_review" />
+
+    <fragment
+        android:id="@+id/navigation_detail_home"
+        android:name="com.meezzi.fingerchoice.ui.detail.DetailHomeFragment"
+        android:label="DetailHomeFragment"
+        tools:layout="@layout/fragment_detail_home" />
 
 </navigation>
