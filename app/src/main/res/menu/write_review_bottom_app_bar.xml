@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/dashboard"
+        android:icon="@drawable/ic_camera"
+        android:contentDescription="@string/write_review_add_photo"
+        app:showAsAction="ifRoom"
+        android:title="@string/write_review_add_photo" />
+</menu>
