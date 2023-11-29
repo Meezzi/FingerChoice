@@ -11,12 +11,12 @@ properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.meezzi.fingerchoice"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.meezzi.fingerchoice"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
