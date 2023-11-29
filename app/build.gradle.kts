@@ -74,4 +74,17 @@ dependencies {
 
     // Kakao MAP API
     implementation("com.kakao.maps.open:android:2.6.0")
+
+    // Room
+    val room_version = "2.6.0"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    ksp("androidx.lifecycle:lifecycle-common:2.6.2")
+
+    // Network
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
 }
