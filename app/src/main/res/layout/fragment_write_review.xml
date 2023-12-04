@@ -1,126 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.composition.WriteReviewFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/top_app_bar_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/top_app_bar"
-            android:layout_width="match_parent"
+        <variable
+            name="viewModel"
+            type="com.meezzi.fingerchoice.ui.composition.WriteReviewViewModel" />
+
+        <variable
+            name="listener"
+            type="com.meezzi.fingerchoice.ui.composition.ReviewSaveClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.composition.WriteReviewFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/top_app_bar_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/write_review_top_app_bar"
-            app:navigationIcon="@drawable/ic_back_arrow"
-            app:title="@string/write_review" />
-    </com.google.android.material.appbar.AppBarLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_back_arrow"
+                app:title="@string/write_review">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_app_bar"
-            style="@style/Widget.Material3.BottomAppBar"
-            android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:onClick="@{() -> viewModel.insertReview(listener)}"
+                    android:padding="16dp"
+                    android:text="@string/write_review_save" />
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <CheckBox
-                android:id="@+id/cb_private"
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottom_app_bar"
+                style="@style/Widget.Material3.BottomAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <CheckBox
+                    android:id="@+id/cb_private"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.isPrivateChecked}"
+                    android:text="@string/write_review_private" />
+            </com.google.android.material.bottomappbar.BottomAppBar>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/write_review_private" />
-        </com.google.android.material.bottomappbar.BottomAppBar>
+                android:contentDescription="@string/write_review_add_photo"
+                app:layout_anchor="@id/bottom_app_bar"
+                app:srcCompat="@drawable/ic_camera" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/bt_toggle_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/write_review_add_photo"
-            app:layout_anchor="@id/bottom_app_bar"
-            app:srcCompat="@drawable/ic_camera" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_app_bar_layout"
+            app:singleSelection="true">
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/bt_toggle_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_app_bar_layout"
-        app:singleSelection="true">
+            <Button
+                android:id="@+id/bt_bad"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_review_taste_bad" />
 
-        <Button
-            android:id="@+id/bt_bad"
-            style="?attr/materialButtonOutlinedStyle"
+            <Button
+                android:id="@+id/bt_soso"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_review_taste_soso" />
+
+            <Button
+                android:id="@+id/bt_good"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_review_taste_good" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/write_review_taste_bad" />
+            android:layout_marginTop="25dp"
+            android:rating="@={viewModel.score}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_toggle_group" />
 
-        <Button
-            android:id="@+id/bt_soso"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/write_review_taste_soso" />
+            android:layout_margin="15dp"
+            android:autofillHints="name"
+            android:hint="@string/write_review_title"
+            android:inputType="text"
+            android:text="@={viewModel.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
-        <Button
-            android:id="@+id/bt_good"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/write_review_taste_good" />
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:autofillHints="name"
+            android:gravity="start"
+            android:hint="@string/write_review_content"
+            android:inputType="text"
+            android:text="@={viewModel.content}"
+            app:layout_constraintBottom_toTopOf="@+id/coordinator_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_title" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_toggle_group" />
-
-    <EditText
-        android:id="@+id/et_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:autofillHints="name"
-        android:hint="@string/write_review_title"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-    <EditText
-        android:id="@+id/et_content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="15dp"
-        android:autofillHints="name"
-        android:gravity="start"
-        android:hint="@string/write_review_content"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/coordinator_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_title" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
