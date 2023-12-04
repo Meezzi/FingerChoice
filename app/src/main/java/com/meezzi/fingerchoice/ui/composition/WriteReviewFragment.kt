@@ -70,9 +70,9 @@ class WriteReviewFragment : Fragment() {
         binding.btToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
                 taste = when (checkedId) {
-                    R.id.bt_good -> "Good"
-                    R.id.bt_soso -> "Soso"
-                    R.id.bt_bad -> "Bad"
+                    R.id.bt_good -> getString(R.string.taste_good)
+                    R.id.bt_soso -> getString(R.string.taste_soso)
+                    R.id.bt_bad -> getString(R.string.taste_bad)
                     else -> ""
                 }
                 viewModel.setTaste(taste)
@@ -80,31 +80,11 @@ class WriteReviewFragment : Fragment() {
         }
     }
 
-    private fun saveLocalDatabase() {
-        val database = ReviewDatabase.getDatabase(requireContext())
-        val reviewDao = database.reviewDao()
-
-        val review = Review(
-            taste = taste,
-            score = score,
-            title = title,
-            content = content,
-            date = date,
-            restaurant = restaurant,
-        )
-
-        CoroutineScope(Dispatchers.IO).launch {
-            reviewDao.insertReview(review)
-        }
-        alarmDialog()
-    }
-
-    private fun alarmDialog() {
+    private fun showSaveCompleteDialog() {
         AlertDialog.Builder(requireContext())
-            .setMessage("저장되었습니다.")
-            .setPositiveButton(
-                "확인"
-            ) { dialog, which -> }
+            .setMessage(getString(R.string.review_write_save))
+            .setPositiveButton(getString(R.string.review_write_ok)) { dialog, which ->
+            }
             .create()
             .show()
 
