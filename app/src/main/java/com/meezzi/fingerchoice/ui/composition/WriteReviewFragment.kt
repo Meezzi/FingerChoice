@@ -12,9 +12,6 @@ import com.meezzi.fingerchoice.FingerChoiceApplication
 import com.meezzi.fingerchoice.R
 import com.meezzi.fingerchoice.data.repository.ReviewRepository
 import com.meezzi.fingerchoice.databinding.FragmentWriteReviewBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class WriteReviewFragment : Fragment() {
 
@@ -28,11 +25,6 @@ class WriteReviewFragment : Fragment() {
     }
 
     private var taste: String = "맛"
-    private var score: Float = 4.5f
-    private var title: String = "제목"
-    private var content: String = "내용"
-    private val date: String = "2020.20.20"
-    private val restaurant: String = "식당"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
