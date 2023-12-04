@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.meezzi.fingerchoice.FingerChoiceApplication
 import com.meezzi.fingerchoice.R
-import com.meezzi.fingerchoice.data.source.local.Review
-import com.meezzi.fingerchoice.data.source.local.ReviewDatabase
+import com.meezzi.fingerchoice.data.repository.ReviewRepository
 import com.meezzi.fingerchoice.databinding.FragmentWriteReviewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,12 @@ class WriteReviewFragment : Fragment() {
 
     private var _binding: FragmentWriteReviewBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModels<WriteReviewViewModel> {
+        WriteReviewViewModel.provideFactory(
+            repository = ReviewRepository(FingerChoiceApplication.database)
+        )
+    }
 
     private var taste: String = "맛"
     private var score: Float = 4.5f
@@ -44,35 +51,27 @@ class WriteReviewFragment : Fragment() {
         setLayout()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setLayout() {
+        binding.viewModel = viewModel
+        binding.listener = object : ReviewSaveClickListener {
+            override fun onComplete() {
+                showSaveCompleteDialog()
+            }
+        }
+        getTaste()
         setTopAppBar()
     }
 
     private fun setTopAppBar() {
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.item_complete -> {
-                    if (binding.cbPrivate.isChecked) {
-                        getReview()
-                        saveLocalDatabase()
-                    }
-                    true
-                }
-
-                else -> false
-            }
-        }
 
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-    }
-
-    private fun getReview() {
-        getTitle()
-        getContent()
-        getScore()
-        getTaste()
     }
 
     private fun getTaste() {
@@ -84,20 +83,9 @@ class WriteReviewFragment : Fragment() {
                     R.id.bt_bad -> "Bad"
                     else -> ""
                 }
+                viewModel.setTaste(taste)
             }
         }
-    }
-
-    private fun getScore() {
-        score = binding.ratingBar.rating
-    }
-
-    private fun getTitle() {
-        title = binding.etTitle.text.toString()
-    }
-
-    private fun getContent() {
-        content = binding.etContent.text.toString()
     }
 
     private fun saveLocalDatabase() {
