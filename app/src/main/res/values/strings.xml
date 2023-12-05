@@ -47,4 +47,7 @@
     <string name="taste_bad">Bad</string>
     <string name="review_write_save">저장되었습니다.</string>
     <string name="review_write_ok">확인</string>
+
+    <!--  ExploreRestaurant  -->
+    <string name="explore_score">별점</string>
 </resources>
