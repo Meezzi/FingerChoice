@@ -22,7 +22,6 @@ import com.kakao.vectormap.label.LabelTransition
 import com.kakao.vectormap.label.Transition
 import com.meezzi.fingerchoice.databinding.FragmentMapBinding
 
-
 class MapFragment : Fragment() {
 
     private var _binding: FragmentMapBinding? = null
@@ -42,7 +41,6 @@ class MapFragment : Fragment() {
             // Do something for slide offset.
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
