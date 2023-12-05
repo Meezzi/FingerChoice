@@ -15,7 +15,11 @@
         android:id="@+id/navigation_map"
         android:name="com.meezzi.fingerchoice.MapFragment"
         android:label="MapFragment"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_detailRestaurant"
+            app:destination="@id/navigation_detailRestaurant" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_saved_restaurant"
@@ -28,5 +32,11 @@
         android:name="com.meezzi.fingerchoice.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_detailRestaurant"
+        android:name="com.meezzi.fingerchoice.DetailRestaurantFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_detail_restaurant" />
 
 </navigation>
