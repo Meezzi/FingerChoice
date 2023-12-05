@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DetailRestaurantInfoLayout">
+        <attr name="detailImageInfoLabel" format="reference"/>
+        <attr name="detailStringInfoLabel" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="DetailHomeInfoLayout">
+        <attr name="detailHomeInfoLabel" format="reference"/>
+        <attr name="detailHomeInfoText" format="reference"/>
+    </declare-styleable>
+</resources>

@@ -1,4 +1,4 @@
-package com.meezzi.fingerchoice
+package com.meezzi.fingerchoice.ui.map
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,6 +20,7 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTransition
 import com.kakao.vectormap.label.Transition
+import com.meezzi.fingerchoice.R
 import com.meezzi.fingerchoice.databinding.FragmentMapBinding
 
 class MapFragment : Fragment() {

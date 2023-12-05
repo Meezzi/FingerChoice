@@ -1,16 +1,19 @@
-package com.meezzi.fingerchoice
+package com.meezzi.fingerchoice.ui.detail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.meezzi.fingerchoice.databinding.FragmentProfileBinding
+import androidx.navigation.fragment.findNavController
+import com.meezzi.fingerchoice.R
+import com.meezzi.fingerchoice.databinding.FragmentDetailHomeBinding
 
-class ProfileFragment : Fragment() {
+class DetailHomeFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentDetailHomeBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -19,12 +22,15 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
 
+        binding.homeWriteReview.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_detail_restaurant_to_navigation_write_review)
+        }
+    }
 }
