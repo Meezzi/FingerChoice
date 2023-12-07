@@ -10,4 +10,8 @@ class ReviewRepository(database: ReviewDatabase) {
     suspend fun insertReview(review: Review) {
         reviewDao.insertReview(review)
     }
+
+    suspend fun getAllReview(): List<Review> {
+        return reviewDao.getAllReview()
+    }
 }
