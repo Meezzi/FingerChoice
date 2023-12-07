@@ -50,4 +50,9 @@
 
     <!--  ExploreRestaurant  -->
     <string name="explore_score">별점</string>
+
+    <!--  Saved  -->
+    <string name="saved_restaurant_title">나만의 맛집</string>
+    <string name="review">리뷰</string>
+    <string name="restaurant">식당</string>
 </resources>

@@ -26,9 +26,9 @@
 
     <fragment
         android:id="@+id/navigation_saved_restaurant"
-        android:name="com.meezzi.fingerchoice.ui.save.SavedRestaurantFragment"
+        android:name="com.meezzi.fingerchoice.ui.save.SavedFragment"
         android:label="SavedRestaurantFragment"
-        tools:layout="@layout/fragment_saved_restaurant" />
+        tools:layout="@layout/fragment_saved" />
 
     <fragment
         android:id="@+id/navigation_profile"
