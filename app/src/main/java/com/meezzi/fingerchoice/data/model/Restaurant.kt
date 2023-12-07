@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Restaurant(
+    val poiId: String = "",
     val name: String,
     val review: Int,
     val score: Double,

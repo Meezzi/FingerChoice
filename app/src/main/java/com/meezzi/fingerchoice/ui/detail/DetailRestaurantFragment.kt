@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.meezzi.fingerchoice.databinding.FragmentDetailRestaurantBinding
 
@@ -29,5 +30,9 @@ class DetailRestaurantFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.detailViewpager) { tab, position ->
             tab.text = DetailInfo.values()[position].toString()
         }.attach()
+
+        binding.topAppBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 }

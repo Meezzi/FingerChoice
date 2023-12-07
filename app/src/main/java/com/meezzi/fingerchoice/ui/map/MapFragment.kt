@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.storage.FirebaseStorage
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -21,7 +23,9 @@ import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTransition
 import com.kakao.vectormap.label.Transition
 import com.meezzi.fingerchoice.R
+import com.meezzi.fingerchoice.data.repository.RestaurantRepository
 import com.meezzi.fingerchoice.databinding.FragmentMapBinding
+import com.meezzi.fingerchoice.network.ApiClient
 
 class MapFragment : Fragment() {
 
@@ -31,6 +35,12 @@ class MapFragment : Fragment() {
     private lateinit var labelLayer: LabelLayer
     private var isLabelVisible = false
     private lateinit var behavior: BottomSheetBehavior<ConstraintLayout>
+
+    private val viewModel by viewModels<MapViewModel> {
+        MapViewModel.provideFactory(
+            RestaurantRepository(ApiClient.create(), FirebaseStorage.getInstance()),
+        )
+    }
 
     val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -107,6 +117,20 @@ class MapFragment : Fragment() {
                 )
             labelLayer.addLabel(LabelOptions.from(labelId, pos).setStyles(styles))
             isLabelVisible = true
+            viewModel.loadRestaurant(poi.poiId)
+            binding.tvTitle.text = poi.name
+            viewModel.restaurants.observe(viewLifecycleOwner) { restaurant ->
+                binding.restaurant = restaurant
+                if (restaurant.poiId == "") {
+                    binding.btWriteReview.visibility = View.VISIBLE
+
+                    binding.btWriteReview.setOnClickListener {
+                        findNavController().navigate(R.id.action_navigation_map_to_navigation_write_review)
+                    }
+                } else {
+                    binding.btWriteReview.visibility = View.INVISIBLE
+                }
+            }
         }
     }
 
@@ -132,7 +156,7 @@ class MapFragment : Fragment() {
                     }
 
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        Navigation.findNavController(binding.root).navigate(R.id.action_navigation_map_to_navigation_detailRestaurant)
+                        findNavController().navigate(R.id.action_navigation_map_to_navigation_detailRestaurant)
                     }
 
                     BottomSheetBehavior.STATE_HIDDEN -> {
