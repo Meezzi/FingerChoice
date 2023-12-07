@@ -61,10 +61,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:contentDescription="@string/explore_score"
                 android:src="@drawable/ic_star"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                android:contentDescription="@string/explore_score" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
             <TextView
                 android:id="@+id/tv_score"
@@ -76,6 +76,18 @@
                 app:layout_constraintBottom_toTopOf="@+id/recyclerView"
                 app:layout_constraintStart_toEndOf="@+id/iv_star"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+            <Button
+                android:id="@+id/bt_write_review"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="리뷰 작성하기"
+                android:visibility="invisible"
+                app:icon="@drawable/ic_pencil"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_star" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
