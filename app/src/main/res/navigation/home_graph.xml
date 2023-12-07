@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_map_to_navigation_detailRestaurant"
             app:destination="@id/navigation_detail_restaurant" />
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_write_review"
+            app:destination="@id/navigation_write_review" />
     </fragment>
 
     <fragment

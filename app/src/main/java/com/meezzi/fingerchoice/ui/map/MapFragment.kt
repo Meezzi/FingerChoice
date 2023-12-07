@@ -121,6 +121,15 @@ class MapFragment : Fragment() {
             binding.tvTitle.text = poi.name
             viewModel.restaurants.observe(viewLifecycleOwner) { restaurant ->
                 binding.restaurant = restaurant
+                if (restaurant.poiId == "") {
+                    binding.btWriteReview.visibility = View.VISIBLE
+
+                    binding.btWriteReview.setOnClickListener {
+                        findNavController().navigate(R.id.action_navigation_map_to_navigation_write_review)
+                    }
+                } else {
+                    binding.btWriteReview.visibility = View.INVISIBLE
+                }
             }
         }
     }
