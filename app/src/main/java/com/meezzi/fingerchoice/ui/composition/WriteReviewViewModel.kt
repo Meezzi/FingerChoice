@@ -19,6 +19,7 @@ class WriteReviewViewModel(private val reviewRepository: ReviewRepository) : Vie
 
     private val date: String = "2020.20.20"
     private val restaurant: String = "식당"
+    private val location: String = "위치"
 
     fun setTaste(value: String) {
         taste.value = value
@@ -37,6 +38,7 @@ class WriteReviewViewModel(private val reviewRepository: ReviewRepository) : Vie
             content = currentContent,
             date = date,
             restaurant = restaurant,
+            location = location
         )
         viewModelScope.launch {
             reviewRepository.insertReview(review)
