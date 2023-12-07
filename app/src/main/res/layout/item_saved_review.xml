@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="restaurant"
-            type="com.meezzi.fingerchoice.data.model.Restaurant" />
+            name="review"
+            type="com.meezzi.fingerchoice.data.source.local.Review" />
 
     </data>
 
@@ -29,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:text="@{review.restaurant}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_restaurant_image"
             app:layout_constraintTop_toTopOf="@id/iv_restaurant_image"
@@ -40,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="4dp"
+            android:text="@{review.location}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_restaurant_image"
             app:layout_constraintTop_toBottomOf="@id/tv_restaurant_name"
@@ -51,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="4dp"
+            android:text="@{String.valueOf(review.score)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_restaurant_image"
             app:layout_constraintTop_toBottomOf="@id/tv_restaurant_location"
@@ -64,6 +67,7 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:text="@{review.content}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_restaurant_image"
             app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_score"
