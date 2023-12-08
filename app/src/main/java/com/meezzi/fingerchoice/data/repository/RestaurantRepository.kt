@@ -35,15 +35,15 @@ class RestaurantRepository(
     suspend fun getPoiIdRestaurant(poiId: String): Restaurant {
         return try {
             val response = apiClient.getRestaurant()
-            if(response.isSuccessful) {
+            if (response.isSuccessful) {
                 val restaurants = response.body()
                 val restaurant = restaurants?.find { it.poiId == poiId }
-                restaurant ?: Restaurant("", "", 0, 0.0)
+                restaurant ?: Restaurant("", "", "", 0, "", "", 0.0)
             } else {
-                Restaurant("", "", 0, 0.0)
+                Restaurant("", "", "", 0, "", "", 0.0)
             }
         } catch (e: Exception) {
-            Restaurant("", "", 0, 0.0)
+            Restaurant("", "", "", 0, "", "", 0.0)
         }
     }
 

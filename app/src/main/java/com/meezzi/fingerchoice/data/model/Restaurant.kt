@@ -4,11 +4,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Restaurant(
-    val poiId: String = "",
+    val key: String,
     val name: String,
-    val review: Int,
+    val poiId: String = "",
+    val reviewCount: Int,
+    val reviewTitle: String,
+    val reviewContent: String,
     val score: Double,
-    val key: String = "",
     val location: String? = "",
     val imageLocations: List<String>? = null,
     var imageUrl: String? = "",
