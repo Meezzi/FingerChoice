@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -119,12 +121,17 @@ class MapFragment : Fragment() {
             isLabelVisible = true
             viewModel.loadRestaurant(poi.poiId)
             binding.tvTitle.text = poi.name
+            setFragmentResult(
+                "restaurantName",
+                bundleOf("restaurantName" to poi.name)
+            )
             viewModel.restaurants.observe(viewLifecycleOwner) { restaurant ->
                 binding.restaurant = restaurant
                 if (restaurant.poiId == "") {
                     binding.btWriteReview.visibility = View.VISIBLE
 
                     binding.btWriteReview.setOnClickListener {
+
                         findNavController().navigate(R.id.action_navigation_map_to_navigation_write_review)
                     }
                 } else {

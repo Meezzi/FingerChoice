@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.meezzi.fingerchoice.databinding.FragmentDetailRestaurantBinding
@@ -13,6 +14,7 @@ class DetailRestaurantFragment : Fragment() {
 
     private var _binding: FragmentDetailRestaurantBinding? = null
     private val binding get() = _binding!!
+    private var restaurantName: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,5 +36,11 @@ class DetailRestaurantFragment : Fragment() {
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        setFragmentResultListener("restaurantName") { requestKey: String, bundle: Bundle ->
+            restaurantName = bundle.getString("restaurantName")
+        }
+
+        binding.topAppBar.title = restaurantName
     }
 }
