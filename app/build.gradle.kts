@@ -6,6 +6,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp")
     id("kotlinx-serialization")
+    id("com.google.firebase.crashlytics")
 }
 
 val properties = Properties()
@@ -74,6 +75,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-database-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 
     // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
