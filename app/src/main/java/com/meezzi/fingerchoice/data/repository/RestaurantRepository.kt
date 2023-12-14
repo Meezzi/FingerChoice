@@ -19,7 +19,7 @@ class RestaurantRepository(
                     val updatedImageUrlList = restaurant.imageUrlList?.map { imageUrl ->
                         getDownloadUrl(imageUrl)
                     }
-                    restaurant.imageUrlList = updatedImageUrlList
+                    restaurant.imageUrlList = updatedImageUrlList ?: emptyList()
                 }
                 restaurantList ?: emptyList()
 
@@ -38,12 +38,12 @@ class RestaurantRepository(
             if (response.isSuccessful) {
                 val restaurants = response.body()
                 val restaurant = restaurants?.find { it.poiId == poiId }
-                restaurant ?: Restaurant("", "", "", 0, "", "", 0.0)
+                restaurant ?: Restaurant("", "", listOf(), 0f, 0, "", emptyList(), "", emptyList())
             } else {
-                Restaurant("", "", "", 0, "", "", 0.0)
+                Restaurant("", "", listOf(), 0f, 0, "", emptyList(), "", emptyList())
             }
         } catch (e: Exception) {
-            Restaurant("", "", "", 0, "", "", 0.0)
+            Restaurant("", "", listOf(), 0f, 0, "", emptyList(), "", emptyList())
         }
     }
 
