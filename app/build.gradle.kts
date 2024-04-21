@@ -37,6 +37,7 @@ android {
         versionName = "0.7.4"
 
         buildConfigField("String", "GOOGLE_CLIENT_ID", properties["google_client_id"] as String)
+        buildConfigField("String", "KAKAO_MAP_KEY", properties["kakao_map_key"] as String)
         manifestPlaceholders["KAKAO_MAP_KEY"] = properties["kakao_map_key"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
