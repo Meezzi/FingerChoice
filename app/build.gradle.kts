@@ -103,7 +103,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // Kakao MAP API
-    implementation("com.kakao.maps.open:android:2.6.0")
+    implementation("com.kakao.maps.open:android:2.9.5")
 
     // Room
     val room_version = "2.6.1"
