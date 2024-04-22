@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
@@ -48,6 +49,13 @@ class WriteReviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLayout()
+
+        setFragmentResultListener("restaurant") { requestKey: String, bundle: Bundle ->
+            val poiId: String? = bundle.getString("poiId")
+            if (poiId != null) {
+                viewModel.setPoiId(poiId)
+            }
+        }
     }
 
     override fun onDestroyView() {
