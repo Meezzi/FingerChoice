@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center"
-                    android:onClick="@{() -> viewModel.insertReview(listener)}"
+                    android:onClick="@{() -> viewModel.checkPrivateBox(listener)}"
                     android:padding="16dp"
                     android:text="@string/write_review_save" />
             </com.google.android.material.appbar.MaterialToolbar>
