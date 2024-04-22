@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.meezzi.fingerchoice.data.repository.RestaurantRepository
 import com.meezzi.fingerchoice.data.repository.ReviewRepository
 import com.meezzi.fingerchoice.data.source.local.Review
+import com.meezzi.fingerchoice.util.DateFormatText
 import kotlinx.coroutines.launch
 
 class WriteReviewViewModel(
@@ -21,7 +22,7 @@ class WriteReviewViewModel(
     val isPrivateChecked = MutableLiveData<Boolean>()
     val taste = MutableLiveData<String>()
 
-    private val date: String = "2020.20.20"
+    val date = DateFormatText.getCurrentTime()
     private val restaurant: String = "식당"
     private val location: String = "위치"
 
