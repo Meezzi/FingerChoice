@@ -1,5 +1,6 @@
 package com.meezzi.fingerchoice.ui.composition
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,8 +31,7 @@ class WriteReviewViewModel(
         taste.value = value
     }
 
-    fun insertReview(listener: ReviewSaveClickListener) {
-        if (isPrivateChecked.value != true) return
+    fun checkPrivateBox(listener: ReviewSaveClickListener) {
         val currentTitle = title.value ?: ""
         val currentContent = content.value ?: ""
         if (!isValidInfo(currentTitle) || !isValidInfo(currentContent)) return
@@ -41,7 +41,6 @@ class WriteReviewViewModel(
                 currentTitle,
                 currentContent
             )
-            Log.e("poiId", setPoiId.toString())
             insertReviewToFirebaseDB(setPoiId.toString(), reviews)
         } else insertReviewToLocalDB(listener, currentTitle, currentContent)
     }
