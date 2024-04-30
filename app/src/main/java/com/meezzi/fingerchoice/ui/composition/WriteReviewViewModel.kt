@@ -22,6 +22,7 @@ class WriteReviewViewModel(
     val content = MutableLiveData<String>()
     val isPrivateChecked = MutableLiveData<Boolean>()
     val taste = MutableLiveData<String>()
+    val setPoiId = MutableLiveData<String>()
 
     val date = DateFormatText.getCurrentTime()
     private val restaurant: String = "식당"
