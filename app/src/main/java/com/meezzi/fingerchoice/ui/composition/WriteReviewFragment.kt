@@ -51,10 +51,7 @@ class WriteReviewFragment : Fragment() {
         setLayout()
 
         setFragmentResultListener("restaurant") { requestKey: String, bundle: Bundle ->
-            val poiId: String? = bundle.getString("poiId")
-            if (poiId != null) {
-                viewModel.setPoiId(poiId)
-            }
+            val restaurantName = bundle.getString("restaurantName")
         }
     }
 
