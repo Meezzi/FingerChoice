@@ -37,6 +37,7 @@ android {
         versionName = "0.7.4"
 
         buildConfigField("String", "GOOGLE_CLIENT_ID", properties["google_client_id"] as String)
+        buildConfigField("String", "KAKAO_MAP_KEY", properties["kakao_map_key"] as String)
         manifestPlaceholders["KAKAO_MAP_KEY"] = properties["kakao_map_key"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -103,7 +104,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // Kakao MAP API
-    implementation("com.kakao.maps.open:android:2.6.0")
+    implementation("com.kakao.maps.open:android:2.9.5")
 
     // Room
     val room_version = "2.6.1"

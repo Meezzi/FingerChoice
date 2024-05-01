@@ -14,7 +14,6 @@ class DetailRestaurantFragment : Fragment() {
 
     private var _binding: FragmentDetailRestaurantBinding? = null
     private val binding get() = _binding!!
-    private var restaurantName: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +36,8 @@ class DetailRestaurantFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        setFragmentResultListener("restaurantName") { requestKey: String, bundle: Bundle ->
-            restaurantName = bundle.getString("restaurantName")
+        setFragmentResultListener("restaurant") { requestKey: String, bundle: Bundle ->
+            binding.topAppBar.title  = bundle.getString("restaurantName")
         }
-
-        binding.topAppBar.title = restaurantName
     }
 }

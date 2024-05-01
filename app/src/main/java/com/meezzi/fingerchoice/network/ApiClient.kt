@@ -8,12 +8,17 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface ApiClient {
 
     @GET("restaurants.json")
     suspend fun getRestaurant(): Response<List<Restaurant>>
+
+    @POST("restaurants.json")
+    suspend fun insertReview(@Body restaurant: Restaurant): Response<List<Restaurant>>
 
     companion object {
 

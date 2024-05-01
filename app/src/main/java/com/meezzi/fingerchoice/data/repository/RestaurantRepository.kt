@@ -38,12 +38,12 @@ class RestaurantRepository(
             if (response.isSuccessful) {
                 val restaurants = response.body()
                 val restaurant = restaurants?.find { it.poiId == poiId }
-                restaurant ?: Restaurant("", "", "", emptyList(), 0.0, 0, "", emptyList(), "", emptyList())
+                restaurant ?: Restaurant("", "", listOf(), 0f, 0, "", emptyList(), "", emptyList())
             } else {
-                Restaurant("", "", "", emptyList(), 0.0, 0, "", emptyList(), "", emptyList())
+                Restaurant("", "", listOf(), 0f, 0, "", emptyList(), "", emptyList())
             }
         } catch (e: Exception) {
-            Restaurant("", "", null, emptyList(), 0.0, 0, "", emptyList(), "", emptyList())
+            Restaurant("", "", listOf(), 0f, 0, "", emptyList(), "", emptyList())
         }
     }
 

@@ -10,11 +10,10 @@ data class Review(
 
 @Serializable
 data class Restaurant(
-    val key: String,
     val name: String,
-    val poiId: String? = null,
+    val poiId: String? = "",
     val reviews: List<Review>,
-    val score: Double,
+    val score: Float,
     val reviewCount: Int,
     val location: String? = null,
     val imageLocations: List<String>? = null,
