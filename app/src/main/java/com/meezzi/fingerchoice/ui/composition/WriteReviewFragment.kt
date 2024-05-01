@@ -6,12 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.storage.FirebaseStorage
 import com.meezzi.fingerchoice.FingerChoiceApplication
 import com.meezzi.fingerchoice.R
+import com.meezzi.fingerchoice.data.repository.RestaurantRepository
 import com.meezzi.fingerchoice.data.repository.ReviewRepository
 import com.meezzi.fingerchoice.databinding.FragmentWriteReviewBinding
+import com.meezzi.fingerchoice.network.ApiClient
 
 class WriteReviewFragment : Fragment() {
 
@@ -20,7 +24,11 @@ class WriteReviewFragment : Fragment() {
 
     private val viewModel by viewModels<WriteReviewViewModel> {
         WriteReviewViewModel.provideFactory(
-            repository = ReviewRepository(FingerChoiceApplication.database)
+            reviewRepository = ReviewRepository(FingerChoiceApplication.database),
+            restaurantRepository = RestaurantRepository(
+                ApiClient.create(),
+                FirebaseStorage.getInstance()
+            )
         )
     }
 
@@ -41,6 +49,10 @@ class WriteReviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLayout()
+
+        setFragmentResultListener("restaurant") { requestKey: String, bundle: Bundle ->
+            val restaurantName = bundle.getString("restaurantName")
+        }
     }
 
     override fun onDestroyView() {

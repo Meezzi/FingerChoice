@@ -30,10 +30,20 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:text="@{review.restaurant}"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_restaurant_image"
             app:layout_constraintTop_toTopOf="@id/iv_restaurant_image"
             tools:text="짜장면" />
+
+        <TextView
+            android:id="@+id/tv_restaurant_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{review.date}"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_restaurant_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2020.02.20"/>
 
         <TextView
             android:id="@+id/tv_restaurant_location"

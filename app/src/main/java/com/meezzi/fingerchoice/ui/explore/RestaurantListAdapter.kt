@@ -41,7 +41,7 @@ class RestaurantListAdapter :
 
 class RestaurantDiffUtil : DiffUtil.ItemCallback<Restaurant>() {
     override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
-        return oldItem.key == newItem.key
+        return oldItem.poiId == newItem.poiId
     }
 
     override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {

@@ -1,4 +1,5 @@
 import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -6,12 +7,25 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp")
     id("kotlinx-serialization")
+    id("com.google.firebase.crashlytics")
 }
 
 val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 android {
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
     namespace = "com.meezzi.fingerchoice"
     compileSdk = 34
 
@@ -20,21 +34,30 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.7.4"
 
         buildConfigField("String", "GOOGLE_CLIENT_ID", properties["google_client_id"] as String)
+        buildConfigField("String", "KAKAO_MAP_KEY", properties["kakao_map_key"] as String)
         manifestPlaceholders["KAKAO_MAP_KEY"] = properties["kakao_map_key"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", "${applicationId}-v${versionName}")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            isDebuggable = false
+            versionNameSuffix = "-release"
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isDebuggable = true
+            versionNameSuffix = "-debug"
         }
     }
     compileOptions {
@@ -74,12 +97,14 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-database-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 
     // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // Kakao MAP API
-    implementation("com.kakao.maps.open:android:2.6.0")
+    implementation("com.kakao.maps.open:android:2.9.5")
 
     // Room
     val room_version = "2.6.1"

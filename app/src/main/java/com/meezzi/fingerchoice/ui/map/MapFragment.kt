@@ -121,9 +121,10 @@ class MapFragment : Fragment() {
             isLabelVisible = true
             viewModel.loadRestaurant(poi.poiId)
             binding.tvTitle.text = poi.name
+
+            val bundle = bundleOf("restaurantName" to poi.name, "poiId" to poi.poiId)
             setFragmentResult(
-                "restaurantName",
-                bundleOf("restaurantName" to poi.name)
+                "restaurant", bundle
             )
             viewModel.restaurants.observe(viewLifecycleOwner) { restaurant ->
                 binding.restaurant = restaurant
