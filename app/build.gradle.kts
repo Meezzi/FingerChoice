@@ -37,8 +37,8 @@ android {
         versionName = "0.7.4"
 
         buildConfigField("String", "GOOGLE_CLIENT_ID", properties["google_client_id"] as String)
-        buildConfigField("String", "KAKAO_MAP_KEY", properties["kakao_map_key"] as String)
-        manifestPlaceholders["KAKAO_MAP_KEY"] = properties["kakao_map_key"] as String
+        buildConfigField("String", "NAVER_MAP_KEY", properties["naver_map_key"] as String)
+        manifestPlaceholders["NAVER_MAP_KEY"] = properties["naver_map_key"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "${applicationId}-v${versionName}")
@@ -103,8 +103,8 @@ dependencies {
     // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
-    // Kakao MAP API
-    implementation("com.kakao.maps.open:android:2.9.5")
+    // Naver MAP API
+    implementation("com.naver.maps:map-sdk:3.18.0")
 
     // Room
     val room_version = "2.6.1"
