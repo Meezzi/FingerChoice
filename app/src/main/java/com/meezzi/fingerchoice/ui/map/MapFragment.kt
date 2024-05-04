@@ -5,25 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.storage.FirebaseStorage
-import com.kakao.vectormap.KakaoMap
-import com.kakao.vectormap.KakaoMapReadyCallback
-import com.kakao.vectormap.LatLng
-import com.kakao.vectormap.MapLifeCycleCallback
-import com.kakao.vectormap.MapView
-import com.kakao.vectormap.Poi
-import com.kakao.vectormap.label.LabelLayer
-import com.kakao.vectormap.label.LabelOptions
-import com.kakao.vectormap.label.LabelStyle
-import com.kakao.vectormap.label.LabelStyles
-import com.kakao.vectormap.label.LabelTransition
-import com.kakao.vectormap.label.Transition
 import com.meezzi.fingerchoice.R
 import com.meezzi.fingerchoice.data.repository.RestaurantRepository
 import com.meezzi.fingerchoice.databinding.FragmentMapBinding
@@ -33,9 +19,6 @@ class MapFragment : Fragment() {
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var labelLayer: LabelLayer
-    private var isLabelVisible = false
     private lateinit var behavior: BottomSheetBehavior<ConstraintLayout>
 
     private val viewModel by viewModels<MapViewModel> {
@@ -70,76 +53,9 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setMap()
         initEvent()
         val standardBottomSheet = binding.persistentBottomSheet
         val standardBottomSheetBehavior = BottomSheetBehavior.from(standardBottomSheet)
-    }
-
-    private fun setMap() {
-        val mapView: MapView = binding.mapView
-        mapView.start(object : MapLifeCycleCallback() {
-            override fun onMapDestroy() {
-                // 지도 API 가 정상적으로 종료될 때 호출됨
-            }
-
-            override fun onMapError(error: Exception) {
-                // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
-            }
-        }, object : KakaoMapReadyCallback() {
-            override fun onMapReady(kakaoMap: KakaoMap) {
-                labelLayer = kakaoMap.labelManager?.layer!!
-                kakaoMap.setOnMapClickListener { kakaoMap, position, screenPoint, poi ->
-                    showIconLabel(kakaoMap, position, poi, "label")
-                }
-            }
-        })
-    }
-
-    private fun showIconLabel(kakaoMap: KakaoMap, position: LatLng, poi: Poi, labelId: String) {
-        val pos = LatLng.from(position)
-
-        if (isLabelVisible) {
-            labelLayer.remove(labelLayer.getLabel("label"))
-            isLabelVisible = false
-        }
-
-        if (poi.isPoi) {
-            val styles = kakaoMap.labelManager
-                ?.addLabelStyles(
-                    LabelStyles.from(
-                        LabelStyle.from(R.drawable.ic_pink_marker)
-                            .setIconTransition(
-                                LabelTransition.from(
-                                    Transition.None,
-                                    Transition.None
-                                )
-                            )
-                    )
-                )
-            labelLayer.addLabel(LabelOptions.from(labelId, pos).setStyles(styles))
-            isLabelVisible = true
-            viewModel.loadRestaurant(poi.poiId)
-            binding.tvTitle.text = poi.name
-
-            val bundle = bundleOf("restaurantName" to poi.name, "poiId" to poi.poiId)
-            setFragmentResult(
-                "restaurant", bundle
-            )
-            viewModel.restaurants.observe(viewLifecycleOwner) { restaurant ->
-                binding.restaurant = restaurant
-                if (restaurant.poiId == "") {
-                    binding.btWriteReview.visibility = View.VISIBLE
-
-                    binding.btWriteReview.setOnClickListener {
-
-                        findNavController().navigate(R.id.action_navigation_map_to_navigation_write_review)
-                    }
-                } else {
-                    binding.btWriteReview.visibility = View.INVISIBLE
-                }
-            }
-        }
     }
 
     private fun initEvent() {
