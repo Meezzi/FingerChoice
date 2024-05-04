@@ -28,8 +28,8 @@
             android:exported="true"/>
 
         <meta-data
-            android:name="com.kakao.vectormap.APP_KEY"
-            android:value="${KAKAO_MAP_KEY}" />
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="${NAVER_MAP_KEY}" />
     </application>
 
 </manifest>
