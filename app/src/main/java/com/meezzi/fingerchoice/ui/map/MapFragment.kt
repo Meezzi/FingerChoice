@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.storage.FirebaseStorage
 import com.meezzi.fingerchoice.R
 import com.meezzi.fingerchoice.data.repository.RestaurantRepository
@@ -25,17 +23,6 @@ class MapFragment : Fragment() {
         MapViewModel.provideFactory(
             RestaurantRepository(ApiClient.create(), FirebaseStorage.getInstance()),
         )
-    }
-
-    val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
-            // Do something for new state.
-        }
-
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            // Do something for slide offset.
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
