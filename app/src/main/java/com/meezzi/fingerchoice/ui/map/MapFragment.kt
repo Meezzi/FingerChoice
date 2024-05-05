@@ -22,7 +22,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
-    private lateinit var behavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var locationSource: FusedLocationSource
+    private lateinit var naverMap: NaverMap
 
     private val viewModel by viewModels<MapViewModel> {
         MapViewModel.provideFactory(
@@ -58,34 +59,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.map_view, it).commit()
             }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        behavior.removeBottomSheetCallback(bottomSheetCallback)
-                    }
-
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-
-                    }
-
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        findNavController().navigate(R.id.action_navigation_map_to_navigation_detailRestaurant)
-                    }
-
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-
-                    }
-
-                    BottomSheetBehavior.STATE_SETTLING -> {
-
-                    }
-                }
-            }
-        })
+        mapFragment.getMapAsync(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    @UiThread
+    override fun onMapReady(naverMap: NaverMap) {
+        val uiSettings = naverMap.uiSettings
+        uiSettings.isCompassEnabled = false
+        uiSettings.isLocationButtonEnabled = true
+        this.naverMap = naverMap
+        naverMap.locationSource = locationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 }
