@@ -4,16 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.firebase.storage.FirebaseStorage
+import com.naver.maps.map.MapFragment
 import com.meezzi.fingerchoice.R
 import com.meezzi.fingerchoice.data.repository.RestaurantRepository
 import com.meezzi.fingerchoice.databinding.FragmentMapBinding
 import com.meezzi.fingerchoice.network.ApiClient
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.util.FusedLocationSource
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
@@ -40,20 +45,17 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initEvent()
-        val standardBottomSheet = binding.persistentBottomSheet
-        val standardBottomSheetBehavior = BottomSheetBehavior.from(standardBottomSheet)
+        initMap()
     }
 
-    private fun initEvent() {
-        persistentBottomSheetEvent()
-    }
+    private fun initMap() {
+        locationSource =
+            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 
-    private fun persistentBottomSheetEvent() {
-        behavior = BottomSheetBehavior.from(binding.persistentBottomSheet)
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
+        val fm = childFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.map_view) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.map_view, it).commit()
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
