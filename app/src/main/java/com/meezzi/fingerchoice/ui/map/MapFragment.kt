@@ -75,6 +75,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
+
+        naverMap.setOnSymbolClickListener { symbol ->
+            run {
+                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                binding.tvTitle.text = symbol.caption
+                true
+            }
+        }
     }
 
     private fun initializePersistentBottomSheet() {
