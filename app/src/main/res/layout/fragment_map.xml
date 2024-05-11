@@ -58,8 +58,10 @@
                     <TextView
                         android:id="@+id/tv_title"
                         style="@style/TextAppearance.Material3.HeadlineMedium"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_marginStart="20dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/drag_handle" />
@@ -80,6 +82,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@{String.valueOf(restaurant.score)}"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_star"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iv_star"
                         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
@@ -89,8 +92,7 @@
                         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="리뷰 작성하기"
-                        android:visibility="invisible"
+                        android:text="@string/write_review"
                         app:icon="@drawable/ic_pencil"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
