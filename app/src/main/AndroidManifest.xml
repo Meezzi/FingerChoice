@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".FingerChoiceApplication"
@@ -28,8 +30,8 @@
             android:exported="true"/>
 
         <meta-data
-            android:name="com.kakao.vectormap.APP_KEY"
-            android:value="${KAKAO_MAP_KEY}" />
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="${NAVER_MAP_KEY}" />
     </application>
 
 </manifest>

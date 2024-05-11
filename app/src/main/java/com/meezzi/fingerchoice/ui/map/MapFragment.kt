@@ -4,55 +4,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.os.bundleOf
+import android.widget.FrameLayout
+import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.storage.FirebaseStorage
-import com.kakao.vectormap.KakaoMap
-import com.kakao.vectormap.KakaoMapReadyCallback
-import com.kakao.vectormap.LatLng
-import com.kakao.vectormap.MapLifeCycleCallback
-import com.kakao.vectormap.MapView
-import com.kakao.vectormap.Poi
-import com.kakao.vectormap.label.LabelLayer
-import com.kakao.vectormap.label.LabelOptions
-import com.kakao.vectormap.label.LabelStyle
-import com.kakao.vectormap.label.LabelStyles
-import com.kakao.vectormap.label.LabelTransition
-import com.kakao.vectormap.label.Transition
+import com.naver.maps.map.MapFragment
 import com.meezzi.fingerchoice.R
 import com.meezzi.fingerchoice.data.repository.RestaurantRepository
 import com.meezzi.fingerchoice.databinding.FragmentMapBinding
 import com.meezzi.fingerchoice.network.ApiClient
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.util.FusedLocationSource
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var labelLayer: LabelLayer
-    private var isLabelVisible = false
-    private lateinit var behavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var locationSource: FusedLocationSource
+    private lateinit var naverMap: NaverMap
+    lateinit var sheetBehavior: BottomSheetBehavior<FrameLayout>
 
     private val viewModel by viewModels<MapViewModel> {
         MapViewModel.provideFactory(
             RestaurantRepository(ApiClient.create(), FirebaseStorage.getInstance()),
         )
-    }
-
-    val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
-            // Do something for new state.
-        }
-
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            // Do something for slide offset.
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,117 +50,59 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setMap()
-        initEvent()
-        val standardBottomSheet = binding.persistentBottomSheet
-        val standardBottomSheetBehavior = BottomSheetBehavior.from(standardBottomSheet)
+        initializePersistentBottomSheet()
+        initMap()
     }
 
-    private fun setMap() {
-        val mapView: MapView = binding.mapView
-        mapView.start(object : MapLifeCycleCallback() {
-            override fun onMapDestroy() {
-                // 지도 API 가 정상적으로 종료될 때 호출됨
+    private fun initMap() {
+        locationSource =
+            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+
+        val fm = childFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.map_view) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.map_view, it).commit()
             }
 
-            override fun onMapError(error: Exception) {
-                // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
-            }
-        }, object : KakaoMapReadyCallback() {
-            override fun onMapReady(kakaoMap: KakaoMap) {
-                labelLayer = kakaoMap.labelManager?.layer!!
-                kakaoMap.setOnMapClickListener { kakaoMap, position, screenPoint, poi ->
-                    showIconLabel(kakaoMap, position, poi, "label")
-                }
-            }
-        })
+        mapFragment.getMapAsync(this)
     }
 
-    private fun showIconLabel(kakaoMap: KakaoMap, position: LatLng, poi: Poi, labelId: String) {
-        val pos = LatLng.from(position)
+    @UiThread
+    override fun onMapReady(naverMap: NaverMap) {
+        val uiSettings = naverMap.uiSettings
+        uiSettings.isCompassEnabled = false
+        uiSettings.isLocationButtonEnabled = true
+        this.naverMap = naverMap
+        naverMap.locationSource = locationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
 
-        if (isLabelVisible) {
-            labelLayer.remove(labelLayer.getLabel("label"))
-            isLabelVisible = false
-        }
-
-        if (poi.isPoi) {
-            val styles = kakaoMap.labelManager
-                ?.addLabelStyles(
-                    LabelStyles.from(
-                        LabelStyle.from(R.drawable.ic_pink_marker)
-                            .setIconTransition(
-                                LabelTransition.from(
-                                    Transition.None,
-                                    Transition.None
-                                )
-                            )
-                    )
-                )
-            labelLayer.addLabel(LabelOptions.from(labelId, pos).setStyles(styles))
-            isLabelVisible = true
-            viewModel.loadRestaurant(poi.poiId)
-            binding.tvTitle.text = poi.name
-
-            val bundle = bundleOf("restaurantName" to poi.name, "poiId" to poi.poiId)
-            setFragmentResult(
-                "restaurant", bundle
-            )
-            viewModel.restaurants.observe(viewLifecycleOwner) { restaurant ->
-                binding.restaurant = restaurant
-                if (restaurant.poiId == "") {
-                    binding.btWriteReview.visibility = View.VISIBLE
-
-                    binding.btWriteReview.setOnClickListener {
-
-                        findNavController().navigate(R.id.action_navigation_map_to_navigation_write_review)
-                    }
-                } else {
-                    binding.btWriteReview.visibility = View.INVISIBLE
-                }
+        naverMap.setOnSymbolClickListener { symbol ->
+            run {
+                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                binding.tvTitle.text = symbol.caption
+                true
             }
         }
     }
 
-    private fun initEvent() {
-        persistentBottomSheetEvent()
-    }
+    private fun initializePersistentBottomSheet() {
+        sheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet)
+        sheetBehavior.isHideable = true
+        sheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-    private fun persistentBottomSheetEvent() {
-        behavior = BottomSheetBehavior.from(binding.persistentBottomSheet)
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-
+        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        behavior.removeBottomSheetCallback(bottomSheetCallback)
-                    }
-
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-
-                    }
-
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        findNavController().navigate(R.id.action_navigation_map_to_navigation_detailRestaurant)
-                    }
-
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-
-                    }
-
-                    BottomSheetBehavior.STATE_SETTLING -> {
-
-                    }
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    Navigation.findNavController(binding.root)
+                        .navigate(R.id.action_navigation_map_to_navigation_detailRestaurant)
                 }
             }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 }
